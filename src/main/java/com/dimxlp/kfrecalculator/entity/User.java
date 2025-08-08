@@ -23,7 +23,7 @@ import com.dimxlp.kfrecalculator.enumeration.Role;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "_user")
 public class User implements UserDetails {
 
     @Id
