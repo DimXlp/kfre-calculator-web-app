@@ -12,4 +12,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     // This method is crucial for Spring Security to find a user by their login identifier (email).
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByAuthProviderAndAuthProviderId(String provider, String providerId);
+
+    Optional<User> findByEmailIgnoreCase(String email);
+
 }

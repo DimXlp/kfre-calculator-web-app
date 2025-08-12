@@ -67,6 +67,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Report> reports;
 
+    @Column(name = "auth_provider", nullable = false)
+    private String authProvider;
+
+    @Column(name = "auth_provider_id", nullable = false, unique = true)
+    private String authProviderId;
+
 
     // -- UserDetails Methods --
     @Override
