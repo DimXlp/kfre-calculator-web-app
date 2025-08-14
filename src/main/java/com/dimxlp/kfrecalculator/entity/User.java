@@ -36,10 +36,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String lastName;
 
+    private String fullName;
+
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(nullable = false)
@@ -51,9 +53,15 @@ public class User implements UserDetails {
 
     private Instant lastLogin;
 
+    @Column(name = "android_last_login")
+    private Instant androidLastLogin;
+
     @Column(nullable = false)
     @CreationTimestamp
     private Instant createdAt;
+
+    @Column(name = "android_created_at")
+    private Instant androidCreatedAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;
