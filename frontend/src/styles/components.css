@@ -139,3 +139,106 @@
 
 /* Hero CTA strip */
 .chips{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+/* Tabs (QuickCalc) — minimal, reuses existing tokens */
+.tabs {
+    display: inline-flex;
+    gap: 6px;
+    background: var(--color-surface);
+    padding: 4px;
+    border-radius: var(--radius-pill);
+}
+.tab {
+    border: 0;
+    background: transparent;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+.tab-active {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* === QuickCalc: stacked layout === */
+.form-stack {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+/* === Tabs full-width segmented control === */
+.tabs.tabs-full {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    background: var(--color-surface);
+    padding: 4px;
+    border-radius: var(--radius-pill);
+}
+
+.tabs.tabs-full .tab {
+    flex: 1 1 0;
+    text-align: center;
+}
+
+
+/* Small space between title and input */
+.form-stack .label {
+    margin-bottom: 4px;
+}
+
+/* Smaller input size */
+.input-sm {
+    height: 40px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+/* Small select input */
+select.input.input-sm {
+    height: 40px;
+}
+
+.form-narrow {
+    width: 100%;
+    max-width: 480px;
+}
+@media (min-width: 1200px) {
+    .form-narrow { max-width: 560px; }
+}
+
+/* Label → input: */
+.form-stack .label {
+    margin-bottom: 8px;
+}
+
+/* Normalize select so it matches .input sizing exactly */
+.input {
+    box-sizing: border-box;     /* consistent sizing for all form controls */
+    display: block;             /* ensures width:100% behaves the same */
+}
+
+/* Make native <select> match .input input-sm */
+select.input {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    /* lightweight chevron so we control padding/height consistently */
+    background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235e7b8d'>\
+<path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 34px;        /* room for the chevron */
+}
+
+/* Ensure the compact height is identical */
+select.input.input-sm {
+    height: 40px;
+    line-height: 1.2;
+}

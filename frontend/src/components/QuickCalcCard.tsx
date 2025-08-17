@@ -1,74 +1,160 @@
-import { useState } from 'react';
+import React, { useState } from "react";
+import "../styles/components.css";
+
+type Sex = "Male" | "Female";
+type TabKey = "KFRE" | "CKD-EPI";
 
 export default function QuickCalcCard() {
-    const [age, setAge] = useState<string>('');
+    const [tab, setTab] = useState<TabKey>("KFRE");
 
-    const SexOptions = ['Male', 'Female'] as const;
-    type Sex = typeof SexOptions[number];
-    const [sex, setSex] = useState<Sex>('Male');
+    // KFRE inputs
+    const [age, setAge] = useState<number | "">("");
+    const [sex, setSex] = useState<Sex>("Male");
+    const [egfr, setEgfr] = useState<number | "">("");
+    const [acr, setAcr] = useState<number | "">("");
 
-    const [egfr, setEgfr] = useState<string>('');
-    const [acr, setAcr] = useState<string>('');
-    const [result, setResult] = useState<string>('');
+    // CKD-EPI inputs
+    const [ckdAge, setCkdAge] = useState<number | "">("");
+    const [ckdSex, setCkdSex] = useState<Sex>("Male");
+    const [scr, setScr] = useState<number | "">("");
 
-    function onCalculate() {
-        // placeholder – απλός έλεγχος εισόδου
-        if (!age || !egfr || !acr) {
-            setResult('Please fill all fields to preview your risk.');
-            return;
-        }
-        setResult('Result will appear here; nothing is stored.');
-    }
+    const handleCalcKFRE = (e: React.FormEvent) => {
+        e.preventDefault();
+        alert("KFRE preview only — no data is saved.");
+    };
+
+    const handleCalcCKD = (e: React.FormEvent) => {
+        e.preventDefault();
+        alert("CKD-EPI preview only — no data is saved.");
+    };
 
     return (
-        <div className="card">
-            <p className="section-title">Quick Calculation</p>
-            <p className="muted">Enter your information to calculate your kidney failure risk.</p>
+        <section className="container" style={{ padding: "0 0 40px" }}>
+            <div className="card">
+                {/* Header */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 12 }}>
+                    <div>
+                        <p className="section-title">Quick Calculation</p>
+                        <p className="muted">Instant preview — no sign-in, nothing is stored.</p>
+                    </div>
 
-            <div className="form-grid" style={{marginTop:12}}>
-                <label>
-                    <div className="label">Age (years)</div>
-                    <input className="input" placeholder="e.g. 65" inputMode="numeric"
-                           value={age} onChange={e=>setAge(e.target.value)} />
-                </label>
+                    {/* Full-width segmented tabs */}
+                    <div className="tabs tabs-full" role="tablist" aria-label="Calculator type">
+                        <button
+                            type="button"
+                            className={`tab ${tab === "KFRE" ? "tab-active" : ""}`}
+                            onClick={() => setTab("KFRE")}
+                            role="tab"
+                            aria-selected={tab === "KFRE"}
+                        >
+                            KFRE
+                        </button>
+                        <button
+                            type="button"
+                            className={`tab ${tab === "CKD-EPI" ? "tab-active" : ""}`}
+                            onClick={() => setTab("CKD-EPI")}
+                            role="tab"
+                            aria-selected={tab === "CKD-EPI"}
+                        >
+                            CKD-EPI
+                        </button>
+                    </div>
+                </div>
 
-                <label>
-                    <div className="label">Sex</div>
-                    <select className="input" value={sex} onChange={e=>setSex(e.target.value as Sex)}>
-                        {SexOptions.map(opt => (
-                            <option key={opt} value={opt}>{opt}</option>
-                        ))}
-                    </select>
-                </label>
+                {/* Forms (stacked fields) */}
+                {tab === "KFRE" ? (
+                    <form onSubmit={handleCalcKFRE} className="form-stack form-narrow">
+                        <label>
+                            <div className="label">Age (years)</div>
+                            <input
+                                className="input input-sm"
+                                inputMode="numeric"
+                                placeholder="e.g. 65"
+                                value={age}
+                                onChange={(e) => setAge(e.target.value === "" ? "" : Number(e.target.value))}
+                            />
+                        </label>
 
-                <label>
-                    <div className="label">eGFR (mL/min/1.73m²)</div>
-                    <input className="input" placeholder="e.g. 45" inputMode="decimal"
-                           value={egfr} onChange={e=>setEgfr(e.target.value)} />
-                </label>
+                        <label>
+                            <div className="label">Sex</div>
+                            <select
+                                className="input input-sm"
+                                value={sex}
+                                onChange={(e) => setSex(e.target.value as Sex)}
+                            >
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </label>
 
-                <label>
-                    <div className="label">ACR (mg/g)</div>
-                    <input className="input" placeholder="e.g. 150" inputMode="decimal"
-                           value={acr} onChange={e=>setAcr(e.target.value)} />
-                </label>
+                        <label>
+                            <div className="label">eGFR (mL/min/1.73m²)</div>
+                            <input
+                                className="input input-sm"
+                                inputMode="numeric"
+                                placeholder="e.g. 32"
+                                value={egfr}
+                                onChange={(e) => setEgfr(e.target.value === "" ? "" : Number(e.target.value))}
+                            />
+                        </label>
+
+                        <label>
+                            <div className="label">ACR (mg/g)</div>
+                            <input
+                                className="input input-sm"
+                                inputMode="numeric"
+                                placeholder="e.g. 160"
+                                value={acr}
+                                onChange={(e) => setAcr(e.target.value === "" ? "" : Number(e.target.value))}
+                            />
+                        </label>
+
+                        <div style={{ marginTop: 6 }}>
+                            <button type="submit" className="btn btn-primary">Calculate</button>
+                        </div>
+                    </form>
+                ) : (
+                    <form onSubmit={handleCalcCKD} className="form-stack form-narrow">
+                        <label>
+                            <div className="label">Age (years)</div>
+                            <input
+                                className="input input-sm"
+                                inputMode="numeric"
+                                placeholder="e.g. 65"
+                                value={ckdAge}
+                                onChange={(e) => setCkdAge(e.target.value === "" ? "" : Number(e.target.value))}
+                            />
+                        </label>
+
+                        <label>
+                            <div className="label">Sex</div>
+                            <select
+                                className="input input-sm"
+                                value={ckdSex}
+                                onChange={(e) => setCkdSex(e.target.value as Sex)}
+                            >
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            <div className="label">Serum Creatinine (mg/dL)</div>
+                            <input
+                                className="input input-sm"
+                                inputMode="numeric"
+                                placeholder="e.g. 1.4"
+                                value={scr}
+                                onChange={(e) => setScr(e.target.value === "" ? "" : Number(e.target.value))}
+                            />
+                        </label>
+
+                        <div style={{ marginTop: 6 }}>
+                            <button type="submit" className="btn btn-primary">Calculate</button>
+                        </div>
+                    </form>
+                )}
             </div>
-
-            <div className="form-actions">
-                <button className="btn btn-primary" onClick={onCalculate}>Calculate</button>
-                <span style={{marginLeft:12}} className="muted">{result || 'No sign-in required. We don’t save anything.'}</span>
-            </div>
-
-            <div style={{marginTop:16}}>
-                <p className="section-title" style={{fontSize:16}}>For Individuals</p>
-                <p className="muted">Instant risk preview. No account required.</p>
-
-                <p className="section-title" style={{fontSize:16, marginTop:8}}>For Doctors</p>
-                <p className="muted">Full features after sign-in. Your data stays private.</p>
-
-                <p className="section-title" style={{fontSize:16, marginTop:8}}>Privacy-first</p>
-                <p className="muted">Quick calculations never leave your browser.</p>
-            </div>
-        </div>
+        </section>
     );
 }
